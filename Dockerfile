@@ -1,7 +1,9 @@
 FROM registry.k8s.io/git-sync/git-sync:v4.0.0
 COPY --from=ghcr.io/tarampampam/curl /bin/curl /bin/curl
 
+USER root
 RUN mkdir /data && chown 65533:65533 /data
+USER git-sync
 
 ADD known_hosts /etc/git-secret/
 ADD on_pull.sh /tmp
