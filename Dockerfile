@@ -1,18 +1,18 @@
-FROM registry.k8s.io/git-sync/git-sync:v4.0.0
-COPY --from=ghcr.io/tarampampam/curl /bin/curl /bin/curl
+FROM alpine
 
-USER root
-RUN mkdir /data && chown 65533:65533 /data
-USER git-sync
+RUN apk add --no-cache git curl jq openssh
 
-ADD known_hosts /etc/git-secret/
-ADD on_pull.sh /tmp
+WORKDIR /scripts
+ADD known_hosts /root/.ssh/
+ADD config /root/.ssh/
+ADD pull.sh /scripts
+ADD update_nodered.sh /scripts
 
-# ensure write permissions
-ENV GITSYNC_ADD_USER=true
-ENV GITSYNC_GROUP_WRITE=true
-ENV GITSYNC_ROOT=/git/dest
-ENV NODERED_ROOT=/data
 
-# nodered callback script
-ENV GITSYNC_EXECHOOK_COMMAND=/tmp/on_pull.sh
+ENV GITSYNC_DEST=/git
+ENV GITSYNC_REF main
+ENV GITSYNC_PERIOD 300
+# ENV GITSYNC_EXECHOOK_COMMAND update_nodered.sh
+# RUN mkdir $GITSYNC_DEST && chmod 777 $GITSYNC_DEST
+
+CMD ["pull.sh"]
