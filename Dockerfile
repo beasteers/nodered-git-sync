@@ -15,4 +15,4 @@ ENV GITSYNC_PERIOD 300
 # ENV GITSYNC_EXECHOOK_COMMAND update_nodered.sh
 # RUN mkdir $GITSYNC_DEST && chmod 777 $GITSYNC_DEST
 
-CMD ["pull.sh"]
+CMD ["/scripts/pull.sh"]
