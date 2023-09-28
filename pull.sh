@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 if [ -z "$GITSYNC_REPO" ]; then
 echo "Please set GITSYNC_REPO=https://github.com/your-git-repository"
     exit 1
