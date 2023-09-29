@@ -6,6 +6,13 @@ Checklist
  - You have a development nodered instance where you make your changes. You use Nodered Projects to push to git.
  - You want to push your changes to your production instance by merging into a "prod" branch (for example).
 
+ > NOTE: if there is existing code in the destination directory, it will be copied to `/backup/$(date +"%Y%m%d-%H%M%S")` inside the container.
+ > If you don't mount this as a volume, it will get deleted if you ever recreate the container. Take that at your own risk.
+
+ TODOs:
+  - use `git init` and blah to configure instead of clone
+  - use `git stash` to stash the existing files
+
 ### Public nodered project repo
 put here: [nodered values.yaml](https://github.com/SchwarzIT/node-red-chart/blob/main/charts/node-red/values.yaml)
 ```yaml
