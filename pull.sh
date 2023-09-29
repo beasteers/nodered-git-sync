@@ -4,12 +4,6 @@
 id -un || echo "git-sync:x:$(id -u):$CGID::$HOME:/sbin/nologin\n" >> /etc/passwd
 id
 
-# setup home directory with SSH credentials
-mkdir -p $HOME/.ssh
-cp -r /scripts/src.ssh/* $HOME/.ssh/
-
-
-
 # git config --global --add safe.directory /git
 
 if [ -z "$GITSYNC_REPO" ]; then

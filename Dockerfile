@@ -16,14 +16,14 @@ RUN mkdir -p -m 777 /scripts
 RUN mkdir -p -m 777 /backup
 RUN mkdir -p -m 777 /git
 RUN mkdir -p -m 777 $HOME && chown $CUID:$CGID $HOME
-RUN mkdir -p -m 777 $HOME/.ssh
+# RUN mkdir -p -m 777 $HOME/.ssh
 
 WORKDIR /scripts
 USER $CUID:$CGID
 # add the ssh config somewhere else
 # we create a new one within the 
-ADD known_hosts /scripts/src.ssh/
-ADD config /scripts/src.ssh/
+ADD known_hosts /etc/ssh/ssh_known_hosts
+ADD config /etc/ssh/ssh_config
 
 # global git ignore
 ADD global.gitignore /etc/.gitignore
