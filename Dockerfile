@@ -37,10 +37,9 @@ ADD update_nodered.sh /scripts
 # RUN mkdir -p -m 02775 "$HOME" && chown -R $CUID:$CGID "$HOME"
 # RUN chmod 777 /scripts/.ssh/*
 
-ENV GITSYNC_DEST /git
+ENV GITSYNC_ROOT /git
 ENV GITSYNC_REF main
 ENV GITSYNC_PERIOD 300
 ENV GITSYNC_EXECHOOK_COMMAND /scripts/update_nodered.sh
-# RUN mkdir -p $GITSYNC_DEST && chmod 777 $GITSYNC_DEST
 
 CMD ["/scripts/pull.sh"]

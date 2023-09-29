@@ -12,22 +12,22 @@ echo "Please set GITSYNC_REPO=https://github.com/your-git-repository"
 fi
 
 GITSYNC_BACKUP_DIR="${GITSYNC_BACKUP_DIR:-/backup}"
-GITSYNC_DEST=$(realpath "${GITSYNC_DEST:-/git}")
+GITSYNC_ROOT=$(realpath "${GITSYNC_ROOT:-/git}")
 
 echo "# ---------------------------------- config ---------------------------------- #"
 echo "Git Remote URL: $GITSYNC_REPO"
-echo "Git Destination Folder: $GITSYNC_DEST"
+echo "Git Destination Folder: $GITSYNC_ROOT"
 echo "Pull period (seconds): $GITSYNC_PERIOD"
 echo "Exec command: $GITSYNC_EXECHOOK_COMMAND"
 
 # check - does the directory exist and is not empty? if yes, backup the files and delete
 # BUT!! if the git repo is from "$GITSYNC_REPO" then don't do anything
-if [ -d "$GITSYNC_DEST" ]; then
+if [ -d "$GITSYNC_ROOT" ]; then
     echo "# ---------------------------------------------------------------------------- #"
-    echo "Git Destination \"$GITSYNC_DEST\" already exists:"
-    ls -lah $GITSYNC_DEST
+    echo "Git Destination \"$GITSYNC_ROOT\" already exists:"
+    ls -lah $GITSYNC_ROOT
 
-    REMOTE_URL="$([ -d "$GITSYNC_DEST/.git" ] && git -C "$GITSYNC_DEST" remote get-url origin)"
+    REMOTE_URL="$([ -d "$GITSYNC_ROOT/.git" ] && git -C "$GITSYNC_ROOT" remote get-url origin)"
     echo "---"
     echo "Detected Remote URL: $REMOTE_URL"
     echo "Desired Remote URL: $GITSYNC_REPO"
@@ -39,26 +39,27 @@ if [ -d "$GITSYNC_DEST" ]; then
         bkp=$GITSYNC_BACKUP_DIR/$(date +"%Y%m%d-%H%M%S")
         echo "I'm not really sure what's up with the files so I'm going to move them"
         echo "Backup destination: $bkp"
-        cp -r "$GITSYNC_DEST" "$bkp" && find "$GITSYNC_DEST" -mindepth 1 -delete  
+        cp -r "$GITSYNC_ROOT" "$bkp" && find "$GITSYNC_ROOT" -mindepth 1 -delete  
         ls -lah "$bkp"
         echo
         echo "Git destination is now clean:"
-        ls -lah "$GITSYNC_DEST"
+        ls -lah "$GITSYNC_ROOT"
     fi
 fi
 
 while true; do
 
 # 
-if [ ! -d "$GITSYNC_DEST/.git" ]; then
+if [ ! -d "$GITSYNC_ROOT/.git" ]; then
     # clone the git repository
     echo "# ---------------------------------- Cloning --------------------------------- #"
-    echo "Cloning $GITSYNC_REPO to $GITSYNC_DEST"
-    git clone --branch $GITSYNC_REF --single-branch $GITSYNC_REPO $GITSYNC_DEST || exit 1
+    echo "Cloning $GITSYNC_REPO to $GITSYNC_ROOT"
+    mkdir -p "$GITSYNC_ROOT"
+    git clone --branch $GITSYNC_REF --single-branch $GITSYNC_REPO $GITSYNC_ROOT || exit 1
     echo "# ---------------------------------------------------------------------------- #"
 fi
 
-cd $GITSYNC_DEST
+cd $GITSYNC_ROOT
 echo "--"
 echo "Checking at $(date)"
 
