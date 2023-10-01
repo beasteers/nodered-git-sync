@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  nodered:
+    image: nodered/node-red:latest
+    container_name: nodered
+    restart: unless-stopped
+    environment:
+      TZ: America/New_York
+      NODE_RED_ENABLE_PROJECTS: "true"
+    ports:
+      - "1880:1880"
+    volumes:
+      - ./data:/data
+
+  nodered-gitsync:
+    # image: ghcr.io/beasteers/nodered-git-sync:latest
+    image: nodered-git-sync
+    container_name: nodered-git
+    restart: unless-stopped
+    # entrypoint: ['sh', '-c']
+    # command: 
+    #   - 'while true; do sleep 1000; done'
+    build: 
+      context: .
+    volumes:
+      - ~/.ssh/id_rsa:/tmp/.ssh/identity
+      - ./data/projects/floodnet-nodered:/git
+    environment:
+      GITSYNC_REPO: git@github.com:floodnet-nyc/floodnet-nodered
+      GITSYNC_REF: main-backup
+      GITSYNC_PERIOD: "30"
+      NODERED_URL: "http://nodered:1880"
+      NODERED_USERNAME: "admin"
+      NODERED_PASSWORD: "admin"
+      NODERED_PROJECT_ID: floodnet-nodered

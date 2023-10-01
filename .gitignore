@@ -1,0 +1,11 @@
+.DS_Store
+.env
+
+shh/
+shhh/
+shhhh/
+
+/data
+
+# Crash log files
+crash.log

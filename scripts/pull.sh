@@ -14,11 +14,17 @@ fi
 GITSYNC_BACKUP_DIR="${GITSYNC_BACKUP_DIR:-/backup}"
 GITSYNC_ROOT=$(realpath "${GITSYNC_ROOT:-/git}")
 
+
+
 echo "# ---------------------------------- config ---------------------------------- #"
 echo "Git Remote URL: $GITSYNC_REPO"
 echo "Git Destination Folder: $GITSYNC_ROOT"
 echo "Pull period (seconds): $GITSYNC_PERIOD"
 echo "Exec command: $GITSYNC_EXECHOOK_COMMAND"
+
+run_hook() {
+    [ ! -z $GITSYNC_EXECHOOK_COMMAND ] && echo "Running $GITSYNC_EXECHOOK_COMMAND" && $GITSYNC_EXECHOOK_COMMAND
+}
 
 # check - does the directory exist and is not empty? if yes, backup the files and delete
 # BUT!! if the git repo is from "$GITSYNC_REPO" then don't do anything
@@ -55,7 +61,10 @@ if [ ! -d "$GITSYNC_ROOT/.git" ]; then
     echo "# ---------------------------------- Cloning --------------------------------- #"
     echo "Cloning $GITSYNC_REPO to $GITSYNC_ROOT"
     mkdir -p "$GITSYNC_ROOT"
-    git clone --branch $GITSYNC_REF --single-branch $GITSYNC_REPO $GITSYNC_ROOT || exit 1
+    git clone --branch $GITSYNC_REF --single-branch "$GITSYNC_REPO" "$GITSYNC_ROOT" || continue
+    ls -lah "$GITSYNC_ROOT"
+    echo "# ---------------------------- Running Update Hook --------------------------- #"
+    run_hook
     echo "# ---------------------------------------------------------------------------- #"
 fi
 
@@ -74,9 +83,9 @@ else
         # git pull
         echo "Pulling from $GITSYNC_REPO"
         if git pull --rebase; then
-            echo "# --------------------------------- Changes! --------------------------------- #"
+            echo "# ---------------------------- Running Update Hook --------------------------- #"
             # run update script only when git pulls anything successfully
-            [ ! -z $GITSYNC_EXECHOOK_COMMAND ] && echo "Running $GITSYNC_EXECHOOK_COMMAND" && $GITSYNC_EXECHOOK_COMMAND
+            run_hook
             echo "# ---------------------------------------------------------------------------- #"
         fi
     else

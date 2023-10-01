@@ -10,8 +10,21 @@ Checklist
  > If you don't mount this as a volume, it will get deleted if you ever recreate the container. Take that at your own risk.
 
  TODOs:
-  - use `git init` and blah to configure instead of clone
-  - use `git stash` to stash the existing files
+  - is git clone the best way to do things? perhaps we would want git init, git stash, etc. but that's more complicated
+  - nodered has a few things standing in the way of automated bring up
+    - git config user name and email - can fix this in two ways:
+      - git config inside the nodered container
+      - POST /settings/user {git: {user: {name, email}}}
+    - setting the current project with decryption key
+      - echo "{"projects": {$NODERED_PROJECTS_ACTIVE_PROJECT: {"credentialSecret": $NODERED_PROJECTS_CREDENTIAL_SECRET}}, "activeProject": $NODERED_PROJECTS_ACTIVE_PROJECT}" > .config.projects.json
+{
+    "projects": {
+        "asdf": {
+            "credentialSecret": "asdf"
+        }
+    },
+    "activeProject": "asdf"
+}
 
 ### Public nodered project repo
 put here: [nodered values.yaml](https://github.com/SchwarzIT/node-red-chart/blob/main/charts/node-red/values.yaml)

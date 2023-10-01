@@ -22,17 +22,19 @@ WORKDIR /scripts
 USER $CUID:$CGID
 # add the ssh config somewhere else
 # we create a new one within the 
-ADD known_hosts /etc/ssh/ssh_known_hosts
-ADD config /etc/ssh/ssh_config
+ADD config/ssh_known_hosts /etc/ssh/ssh_known_hosts
+ADD config/ssh_config /etc/ssh/ssh_config
 
 # global git ignore
-ADD global.gitignore /etc/.gitignore
+ADD config/global.gitignore /etc/.gitignore
 RUN git config --global core.excludesfile /etc/.gitignore
 RUN git config --global --add safe.directory /git
+RUN git config --global user.name "nodered-git-sync"
+RUN git config --global user.email "nodered-git-sync@domain.com"
 RUN chmod 0777 $HOME/.gitconfig
 
-ADD pull.sh /scripts
-ADD update_nodered.sh /scripts
+ADD scripts/pull.sh /scripts
+ADD scripts/update_nodered.sh /scripts
 
 # RUN mkdir -p -m 02775 "$HOME" && chown -R $CUID:$CGID "$HOME"
 # RUN chmod 777 /scripts/.ssh/*
