@@ -27,7 +27,7 @@ if [ ! -z "${NODERED_USERNAME}" ] && [ ! -z "${NODERED_PASSWORD}" ]; then
     access_token=$(echo "${response}" | sed -n 's/.*"access_token":"\([^"]*\)".*/\1/p')
     if [ -z "${access_token}" ]; then
         echo2 "Error: Failed to obtain an access token."
-        # exit 1
+        exit 1
     fi
 fi
 

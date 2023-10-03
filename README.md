@@ -199,3 +199,8 @@ The goals of this solution:
  - git clone directly to the folder
  - git pull periodically
  - don't try to pull if there are changes
+
+
+Resources:
+ - 
+ - https://medium.com/@knolleary/creating-a-node-red-deployment-pipeline-to-ibm-cloud-9a8e9d5113de
