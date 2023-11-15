@@ -12,7 +12,8 @@ echo "Please set GITSYNC_REPO=https://github.com/your-git-repository"
 fi
 
 GITSYNC_BACKUP_DIR="${GITSYNC_BACKUP_DIR:-/backup}"
-GITSYNC_ROOT=$(realpath "${GITSYNC_ROOT:-/git}")
+# GITSYNC_ROOT=$(realpath "${GITSYNC_ROOT:-/git}")
+GITSYNC_ROOT="${GITSYNC_ROOT:-/git}"
 
 
 
