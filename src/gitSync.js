@@ -4,14 +4,27 @@ const path = require('path');
 const axios = require('axios');
 const { execSync } = require('child_process');
 
+
+const getDefaultOptions = () => ({
+  repo: process.env.GITSYNC_REPO,
+  ref: process.env.GITSYNC_REF,
+  period: process.env.GITSYNC_PERIOD,
+  credentialSecret: process.env.NODERED_CREDENTIAL_SECRET,
+  username: process.env.NODERED_USERNAME,
+  password: process.env.NODERED_PASSWORD,
+})
+
+
+
 class GitSync {
-  constructor({ 
+  constructor(options) {
+    const { 
       url, username, password, 
       repo, ref, period, 
       projectId, credentialSecret, 
       dataPath, backupPath, rootPath, 
-      ...options 
-  }) {
+      ...opts 
+    } = { ...getDefaultOptions(), ...options };
     this.url = url || 'http://localhost:1880';
     this.username = username;
     this.password = password;
@@ -20,12 +33,12 @@ class GitSync {
     this.projectId = projectId || repo.split('/').pop().replace(/\.git$/, '');
     this.credentialSecret = credentialSecret;
     this.period = +(period || 120);
-    
+
     this.dataPath = dataPath || '/data';
     this.backupPath = backupPath || '/backup';
     this.rootPath = rootPath || path.resolve(`${this.dataPath}/projects/${this.projectId}`);
 
-    this.opts = options;
+    this.opts = opts;
     this.intervalId = null;
   }
 

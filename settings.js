@@ -27,7 +27,7 @@ let ADMIN_PASSHASH = process.env.ADMIN_PASSHASH;
 if(!ADMIN_PASSHASH) {
     ADMIN_PASSHASH = require('bcryptjs').hashSync(process.env.ADMIN_PASSWORD || "Why dont I have a password???", 8);
 }
-const GitSync = require('/data/git_module.js')
+const GitSync = require('@beasteers/nodered-projects-git-sync');
 
 // set the active project with credentials
 const gitrepo = new GitSync({

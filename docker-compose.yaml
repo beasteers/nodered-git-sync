@@ -7,6 +7,7 @@ services:
       context: .
     container_name: nodered
     restart: unless-stopped
+    # entrypoint: sleep 1000
     environment:
       TZ: America/New_York
       NODE_RED_ENABLE_PROJECTS: "true"
@@ -22,7 +23,7 @@ services:
     volumes:
       - ./data:/data
       - ./settings.js:/data/settings.js
-      - ./scripts/git_module.js:/data/git_module.js
+      # - ./scripts/git_module.js:/data/git_module.js
       # - ./config/ssh_config:/usr/src/node-red/.ssh/config
       - ~/.ssh/id_rsa:/usr/src/node-red/.ssh/id_rsa
       - ~/.ssh/id_rsa.pub:/usr/src/node-red/.ssh/id_rsa.pub
