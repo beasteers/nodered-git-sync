@@ -6,6 +6,7 @@ shhh/
 shhhh/
 
 /data
+/data*
 
 # Crash log files
 crash.log

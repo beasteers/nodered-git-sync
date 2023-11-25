@@ -62,7 +62,7 @@ if [ ! -d "$GITSYNC_ROOT/.git" ]; then
     echo "# ---------------------------------- Cloning --------------------------------- #"
     echo "Cloning $GITSYNC_REPO to $GITSYNC_ROOT"
     mkdir -p "$GITSYNC_ROOT"
-    git clone --branch $GITSYNC_REF "$GITSYNC_REPO" "$GITSYNC_ROOT" || continue
+    git clone --branch "$GITSYNC_REF" "$GITSYNC_REPO" "$GITSYNC_ROOT" || echo "clone failed" && continue
     ls -lah "$GITSYNC_ROOT"
     echo "# ---------------------------- Running Update Hook --------------------------- #"
     run_hook

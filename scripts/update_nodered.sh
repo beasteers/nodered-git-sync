@@ -56,7 +56,7 @@ fi
 
 # Make a POST request to reload flows
 echo2 "Reloading flows..."
-response=$(curl -X POST "${NODERED_URL}/flows" \
+response=$(curl -o - -v -X POST "${NODERED_URL}/flows" \
         -d '{"flows": [{"type": "tab"}]}' \
         -H "${AUTH}" \
         -H 'content-type: application/json; charset=utf-8' \
