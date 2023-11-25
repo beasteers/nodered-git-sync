@@ -2,35 +2,52 @@ version: '3.7'
 
 services:
   nodered:
-    image: nodered/node-red:latest
+    # image: nodered/node-red:3.1.0-18
+    build:
+      context: .
     container_name: nodered
     restart: unless-stopped
+    # entrypoint: sleep 1000
     environment:
       TZ: America/New_York
       NODE_RED_ENABLE_PROJECTS: "true"
+      ADMIN_USERNAME: "admin"
+      ADMIN_PASSWORD: "admin"
+      NODE_RED_CREDENTIAL_SECRET: "${NODERED_CREDENTIAL_SECRET:-}"
+
+      GITSYNC_REPO: git@github.com:floodnet-nyc/floodnet-nodered
+      GITSYNC_REF: flux-dev
+      GITSYNC_PERIOD: "60"
     ports:
       - "1880:1880"
     volumes:
       - ./data:/data
+      - ./settings.js:/data/settings.js
+      # - ./scripts/git_module.js:/data/git_module.js
+      # - ./config/ssh_config:/usr/src/node-red/.ssh/config
+      - ~/.ssh/id_rsa:/usr/src/node-red/.ssh/id_rsa
+      - ~/.ssh/id_rsa.pub:/usr/src/node-red/.ssh/id_rsa.pub
 
-  nodered-gitsync:
-    # image: ghcr.io/beasteers/nodered-git-sync:latest
-    image: nodered-git-sync
-    container_name: nodered-git
-    restart: unless-stopped
-    # entrypoint: ['sh', '-c']
-    # command: 
-    #   - 'while true; do sleep 1000; done'
-    build: 
-      context: .
-    volumes:
-      - ~/.ssh/id_rsa:/tmp/.ssh/identity
-      - ./data/projects/floodnet-nodered:/git
-    environment:
-      GITSYNC_REPO: git@github.com:floodnet-nyc/floodnet-nodered
-      GITSYNC_REF: main-backup
-      GITSYNC_PERIOD: "30"
-      NODERED_URL: "http://nodered:1880"
-      NODERED_USERNAME: "admin"
-      NODERED_PASSWORD: "admin"
-      NODERED_PROJECT_ID: floodnet-nodered
+  # nodered-gitsync:
+  #   # image: ghcr.io/beasteers/nodered-git-sync:latest
+  #   image: nodered-git-sync
+  #   container_name: nodered-git
+  #   restart: unless-stopped
+  #   # entrypoint: ['sh', '-c']
+  #   # command: 
+  #   #   - 'while true; do sleep 1000; done'
+  #   build: 
+  #     context: .
+  #   volumes:
+  #     - ~/.ssh/id_rsa:/home/node/.ssh/identity
+  #     # - ./data/projects/floodnet-nodered:/git
+  #     - ./data:/data
+  #   environment:
+  #     GITSYNC_REPO: git@github.com:floodnet-nyc/floodnet-nodered
+  #     GITSYNC_REF: flux-dev
+  #     GITSYNC_PERIOD: "60"
+  #     NODERED_URL: "http://nodered:1880"
+  #     NODERED_PROJECT_ID: floodnet-nodered
+  #     NODERED_CREDENTIAL_SECRET: "${NODERED_CREDENTIAL_SECRET:-}"
+  #     NODERED_USERNAME: "admin"
+  #     NODERED_PASSWORD: "admin"

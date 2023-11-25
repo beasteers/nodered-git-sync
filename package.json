@@ -1,0 +1,15 @@
+{
+    "name": "@bea.steers/nodered-projects-git-sync",
+    "version": "1.0.0",
+    "description": "Automatic orchestration of Node-RED Projects",
+    "main": "src/gitSync.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": ["nodered", "projects", "git", "sync", "gitops", "automatic-orchestration", "nodejs", "module"],
+    "author": "Bea Steers",
+    "license": "MIT",
+    "dependencies": {
+      "axios": "^0.24.0"
+    }
+  }
