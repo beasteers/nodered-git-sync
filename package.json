@@ -1,5 +1,5 @@
 {
-    "name": "@beasteers/nodered-projects-git-sync",
+    "name": "@bea.steers/nodered-projects-git-sync",
     "version": "1.0.0",
     "description": "Automatic orchestration of Node-RED Projects",
     "main": "src/gitSync.js",
